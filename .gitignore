@@ -1,0 +1,8 @@
+build
+node_modules
+.idea
+.env
+/src/creds.ts
+/data
+/dist
+.
