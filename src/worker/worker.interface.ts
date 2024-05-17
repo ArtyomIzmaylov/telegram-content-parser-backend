@@ -5,5 +5,5 @@ export interface IWorkerData {
 }
 
 export interface IChannelWorkerResult {
-    result : boolean
+    result : string
 }
