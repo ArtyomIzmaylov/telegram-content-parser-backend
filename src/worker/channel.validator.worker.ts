@@ -27,9 +27,8 @@ const { workerData, parentPort } = require('worker_threads');
         await client.connect()
         const validateResult = await channelValidator.validate(workerData.channelLink)
         const workerResult : IChannelWorkerResult = {
-            result : validateResult ? 'Канал сущестует' : 'Канал не существует'
+            result : validateResult ? 'Канал существует' : 'Канал не существует'
         }
-
         if (parentPort) {
             parentPort.postMessage(workerResult);
         }
@@ -41,7 +40,6 @@ const { workerData, parentPort } = require('worker_threads');
         }
     }
     finally {
-        console.log('Клиента нет!!!')
         await client.disconnect()
     }
 

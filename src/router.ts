@@ -13,7 +13,19 @@ const requestValidateChannelSchema = Joi.object({
 })
 
 
-router.post('/validateChannel', async(req, res) => {
+
+
+const userParseChannelsSchema = Joi.object({
+    userChannels: Joi.array().items(
+        Joi.object({
+            title: Joi.string().required(),
+            channels: Joi.array().items(Joi.string()).required(),
+        })
+    ).required()
+});
+
+
+router.get('/validateChannel', async(req, res) => {
 
     const {error, value} = requestValidateChannelSchema.validate(req.body, {
         abortEarly : false
@@ -33,5 +45,17 @@ router.post('/validateChannel', async(req, res) => {
     }
 
 })
+router.get('/parseChannels', async (req, res) => {
+    const {error, value} = userParseChannelsSchema.validate(req.body, {
+        abortEarly : false
+    })
+    if (error) {
+        res.send("Invalid request " + JSON.stringify(error))
+    }
+    else {
+        res.send("Succesfully request " + JSON.stringify(value))
 
+    }
+
+})
 export default router

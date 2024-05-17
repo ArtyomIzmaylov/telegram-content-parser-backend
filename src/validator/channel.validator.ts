@@ -1,6 +1,5 @@
 import {Api, TelegramClient} from "telegram";
 import {IConfigService} from "../config/config.interface";
-import {IChannelWorkerResult} from "../worker/worker.interface";
 
 
 export interface IChannelValidator {

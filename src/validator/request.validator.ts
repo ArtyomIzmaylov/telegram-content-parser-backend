@@ -3,6 +3,7 @@ import Joi from "joi"
 export interface IRequestValidatorInterface {
     validate() : void
 }
+
 /*
 export class RequestValidator implements IRequestValidatorInterface{
     constructor(private req : Request, private res : Response) {

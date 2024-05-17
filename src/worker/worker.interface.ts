@@ -7,3 +7,7 @@ export interface IWorkerData {
 export interface IChannelWorkerResult {
     result : string
 }
+
+export interface IParseChannelWorkerResult {
+    result : string[]
+}
