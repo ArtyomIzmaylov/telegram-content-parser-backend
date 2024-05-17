@@ -5,12 +5,19 @@ import {API_HASH, API_ID, STRING_SESSION} from "../creds";
 import {ChannelValidator} from "../validator/channel.validator";
 import {ConfigService} from "../config/config.service";
 import {IChannelWorkerResult} from "./worker.interface";
+import {StringSessionValidator} from "../validator/stringSession.validator";
 
 
 const { workerData, parentPort } = require('worker_threads');
 
 (async () => {
 
+    const validationResult = new StringSessionValidator().validate(STRING_SESSION)
+    if (validationResult !== 'Сессия валидная.') {
+        if (parentPort) {
+            parentPort.postMessage({ result: validationResult });
+        }
+    }
 
     const stringSession = new StringSession(STRING_SESSION)
     const client = new TelegramClient(stringSession, API_ID, API_HASH, {});
