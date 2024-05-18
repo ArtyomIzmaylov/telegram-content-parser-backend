@@ -1,10 +1,15 @@
 
 
 
-export interface IUserParseChannel {
+export interface IRequestValidateChannelData {
+    channelName : string
+}
+
+export interface IUserChannels {
     title : string
     channels : string[]
 }
-export interface IUserParse {
-    userChannels :  IUserParseChannel[]
+export interface IRequestParseChannels {
+    userChannels : IUserChannels[]
 }
+

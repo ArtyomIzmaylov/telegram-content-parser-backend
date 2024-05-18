@@ -1,12 +1,11 @@
-import {IWorkerParseChannelData} from "../worker/worker.interface";
-import {IUserParse, IUserParseChannel} from "../request/request.interface";
 import {WorkerDispatcher} from "../dispatcher/worker.dispatcher";
+import {IUserChannels} from "../request/request.interface";
 
 export class UserChannelsIterator {
 
     constructor(private workerDispatcher : WorkerDispatcher) {
     }
-    async * iterate(userParseChannels : IUserParseChannel[]) {
+    async * iterate(userParseChannels : IUserChannels[]) {
 
         for (const userChannel of userParseChannels) {
             try {

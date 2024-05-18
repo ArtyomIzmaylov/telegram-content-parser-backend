@@ -1,4 +1,3 @@
-import {IUserParse} from "../request/request.interface";
 import {UserParseChannelsIterator} from "../iterator/userParseChannels.iterator";
 
 
