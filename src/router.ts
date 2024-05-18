@@ -2,7 +2,6 @@ import express from "express";
 import {WorkerService} from "./worker/worker.service";
 import path from "path";
 import {IChannelWorkerResult, IWorkerData} from "./worker/worker.interface";
-import Joi from "joi";
 import {UserParseChannelsIterator} from "./iterator/userParseChannels.iterator";
 import {WorkerDispatcher} from "./dispatcher/worker.dispatcher";
 import {UserChannelsIterator} from "./iterator/userChannels.iterator";
