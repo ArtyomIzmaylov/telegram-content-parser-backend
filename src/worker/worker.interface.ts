@@ -3,11 +3,16 @@
 export interface IWorkerData {
     channelLink : string
 }
+export interface IWorkerParseChannelData {
+    channelName : string
+}
 
 export interface IChannelWorkerResult {
     result : string
 }
 
 export interface IParseChannelWorkerResult {
-    result : string[]
+    title : string
+    channels : string[]
 }
+

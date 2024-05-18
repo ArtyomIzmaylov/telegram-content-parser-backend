@@ -17,11 +17,10 @@ import {IParseChannelWorkerResult} from "./worker.interface";
 
     try {
         await client.connect()
-        const messages = await client.getMessages(workerData, {
+        const messages = await client.getMessages(workerData.channelName, {
             limit: LIMIT_MESSAGES,
         });
-
-        const workerResult : IParseChannelWorkerResult = {
+        const workerResult = {
             result : messages.map(msg => msg.message)
         }
         if (parentPort) {

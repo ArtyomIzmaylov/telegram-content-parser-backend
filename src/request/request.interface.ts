@@ -6,6 +6,5 @@ export interface IUserParseChannel {
     channels : string[]
 }
 export interface IUserParse {
-    userId : number
     userChannels :  IUserParseChannel[]
 }

@@ -1,5 +1,5 @@
 import {Worker} from "worker_threads";
-import {IWorkerData} from "./worker.interface";
+import {IChannelWorkerResult, IWorkerData, IWorkerParseChannelData} from "./worker.interface";
 
 
 export class WorkerService {
@@ -7,7 +7,7 @@ export class WorkerService {
     constructor(private readonly pathToWorker : string) {
     }
 
-    async run(workerData : IWorkerData) {
+    async run(workerData : IWorkerData | IWorkerParseChannelData) {
         return new Promise((resolve, reject) => {
             const worker = new Worker(this.pathToWorker, { workerData });
             worker.on('message', resolve);

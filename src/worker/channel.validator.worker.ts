@@ -18,10 +18,8 @@ const { workerData, parentPort } = require('worker_threads');
             parentPort.postMessage({ result: validationResult });
         }
     }
-
     const stringSession = new StringSession(STRING_SESSION)
     const client = new TelegramClient(stringSession, API_ID, API_HASH, {});
-
     const channelValidator = new ChannelValidator(client, new ConfigService())
     try {
         await client.connect()
