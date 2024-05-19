@@ -13,8 +13,8 @@ export class UserParseChannelsIterator {
                 const workerData : IWorkerParseChannelData = {
                     channelName : channelToParse
                 }
-                const workerDataResult = await this.workerService.run(workerData)
-                yield workerDataResult
+                const workerDataResult = await this.workerService.run(workerData) as { workerResult?: string[] }
+                yield workerDataResult.workerResult
 
             }
             catch (e) {

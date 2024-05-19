@@ -1,8 +1,6 @@
 
 
-export interface IWorkerData {
-    channelLink : string
-}
+
 export interface IWorkerParseChannelData {
     channelName : string
 }

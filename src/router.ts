@@ -48,7 +48,7 @@ router.get('/parseChannels', async (req, res) => {
         for await (const userChannel of userChannelsIterator.iterate(requestParseChannels.userChannels)) {
             parsedChannelsResult.push(userChannel)
         }
-        res.send("Succesfully request " + JSON.stringify(parsedChannelsResult))
+        res.send(parsedChannelsResult)
     }
 
 })

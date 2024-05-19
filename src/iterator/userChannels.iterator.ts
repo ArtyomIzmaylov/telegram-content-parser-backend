@@ -15,6 +15,7 @@ export class UserChannelsIterator {
                     texts : workerParseChannelsResult,
                     title : userChannel.title
                 }
+
                 yield userChannelParsed
             }
             catch (e) {

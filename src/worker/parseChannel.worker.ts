@@ -19,7 +19,6 @@ import {TelegramClient} from "telegram";
             limit: LIMIT_MESSAGES,
         })
         if (parentPort) {
-            console.log(messages.map(msg => msg.message))
             parentPort.postMessage({
                 workerResult : messages.map(msg => msg.message)
             });
