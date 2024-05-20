@@ -14,7 +14,8 @@ export class UserParseChannelsIterator {
                     channelName : channelToParse
                 }
                 const workerDataResult = await this.workerService.run(workerData) as { workerResult?: string[] }
-                yield workerDataResult.workerResult
+                const parsedTexts = workerDataResult.workerResult as string[]
+                yield parsedTexts.filter(item => typeof item !== 'object');
 
             }
             catch (e) {

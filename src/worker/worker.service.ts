@@ -15,6 +15,7 @@ export class WorkerService implements IWorkerService{
             const worker = new Worker(this.pathToWorker, { workerData : {
                 requestData : requestData
             } });
+
             worker.on('message', resolve);
             worker.on('error', reject);
             worker.on('exit', (code : any) => {

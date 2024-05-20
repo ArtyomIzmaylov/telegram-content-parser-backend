@@ -51,11 +51,11 @@ router.get('/parseChannels', async (req, res) => {
             parsedChannelsResult.push(userChannel)
         }
         //Здесь я делаю запрос на GO-Service
-
+        console.log(parsedChannelsResult[0].texts[0])
         //const reqArr : string[] = [parsedChannelsResult[0].texts[0][0], parsedChannelsResult[0].texts[0][1], parsedChannelsResult[0].texts[2]]
         const reqArr = ["Я Саша и живу выффывфыв Бразиsadasdasdadasлии.", "Путешествие для человека играет важную роль", "В кафе можно отлично перекусить"]
         const generateResult = await generatorService.generate('http://localhost:5000/api/gpt/generate', {
-            request_texts: reqArr,
+            request_texts: parsedChannelsResult[0].texts[0],
             mode_gen: PromptMode.ConnectText
         })
 
