@@ -25,25 +25,24 @@ interface IRequestBody {
     mode_gen : PromptMode
 }
 export interface IGeneratorService {
-    generate(url : string, body : IRequestBody) : Promise<AxiosResponse<IResponse> | null>
+    generate(url : string, body : IRequestBody) : Promise<IResponse | string>
 }
 export class GeneratorService implements IGeneratorService {
     constructor() {
     }
 
-    async generate(url: string, body: IRequestBody) : Promise<AxiosResponse<IResponse> | null>{
+    async generate(url: string, body: IRequestBody) : Promise<IResponse | string>{
         try {
-            return await axios.post(url, body)
+            const result : AxiosResponse<IResponse> = await axios.post(url, body)
+            return result.data
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                // Ошибка, связанная с Axios (например, проблемы с сетью или ответом сервера)
                 console.error('Axios error:', error.message);
             } else {
-                // Другая ошибка
                 console.error('Unexpected error:', error);
             }
-            return null
+            return JSON.stringify(error)
         }
     }
 }

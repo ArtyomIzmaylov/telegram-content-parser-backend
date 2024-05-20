@@ -10,9 +10,9 @@ app.use('/api', router)
 async function tryFetch() {
     try {
         const generatorService = new GeneratorService()
-        const response = generatorService.generate('http://localhost:5000/api/chat/generate', {
-            request_texts : ['Я саша живующая там'],
-            mode_gen : PromptMode.ConnectText
+        return generatorService.generate('http://localhost:5000/api/gpt/generate', {
+            request_texts: ['Я саша живующая там'],
+            mode_gen: PromptMode.ConnectText
         })
     }
     catch (e) {
@@ -23,7 +23,7 @@ async function tryFetch() {
 async function startApp() {
     try {
         app.listen(APP_PORT, () => console.log('Server has been started'))
-        const result = tryFetch()
+        const result = await tryFetch()
         console.log(result)
     }
     catch (error) {
