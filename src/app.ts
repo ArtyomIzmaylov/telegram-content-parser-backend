@@ -23,8 +23,6 @@ async function tryFetch() {
 async function startApp() {
     try {
         app.listen(APP_PORT, () => console.log('Server has been started'))
-        const result = await tryFetch()
-        console.log(result)
     }
     catch (error) {
         console.log(error)

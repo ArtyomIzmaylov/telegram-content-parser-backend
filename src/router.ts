@@ -7,6 +7,7 @@ import {IChannelValidatorWorkerResult} from "./worker/worker.interface";
 import {WorkerDispatcher} from "./dispatcher/worker.dispatcher";
 import {UserParseChannelsIterator} from "./iterator/userParseChannels.iterator";
 import {UserChannelsIterator} from "./iterator/userChannels.iterator";
+import {GeneratorService, PromptMode} from "./generator/generator.service";
 
 const router = express.Router();
 
@@ -38,6 +39,7 @@ router.get('/parseChannels', async (req, res) => {
         res.send("Invalid request " + JSON.stringify(error))
     }
     else {
+        const generatorService = new GeneratorService()
         const pathToWorker = path.join(__dirname, 'worker', 'parseChannel.worker.js')
         const workerDispatcher = new WorkerDispatcher(new UserParseChannelsIterator(new WorkerService(pathToWorker)))
         const userChannelsIterator = new UserChannelsIterator(workerDispatcher)
@@ -48,7 +50,16 @@ router.get('/parseChannels', async (req, res) => {
         for await (const userChannel of userChannelsIterator.iterate(requestParseChannels.userChannels)) {
             parsedChannelsResult.push(userChannel)
         }
-        res.send(parsedChannelsResult)
+        //Здесь я делаю запрос на GO-Service
+
+        //const reqArr : string[] = [parsedChannelsResult[0].texts[0][0], parsedChannelsResult[0].texts[0][1], parsedChannelsResult[0].texts[2]]
+        const reqArr = ["Я Саша и живу выффывфыв Бразиsadasdasdadasлии.", "Путешествие для человека играет важную роль", "В кафе можно отлично перекусить"]
+        const generateResult = await generatorService.generate('http://localhost:5000/api/gpt/generate', {
+            request_texts: reqArr,
+            mode_gen: PromptMode.ConnectText
+        })
+
+        res.send(generateResult)
     }
 
 })
