@@ -7,16 +7,24 @@ const app = express()
 app.use(express.json())
 app.use('/api', router)
 
-async function startApp() {
+async function tryFetch() {
     try {
-        app.listen(APP_PORT, () => console.log('Server has been started'))
         const generatorService = new GeneratorService()
         const response = generatorService.generate('http://localhost:5000/api/chat/generate', {
             request_texts : ['Я саша живующая там'],
             mode_gen : PromptMode.ConnectText
         })
-        console.log(response)
+    }
+    catch (e) {
+        return 'Ошибка :('
+    }
 
+}
+async function startApp() {
+    try {
+        app.listen(APP_PORT, () => console.log('Server has been started'))
+        const result = tryFetch()
+        console.log(result)
     }
     catch (error) {
         console.log(error)

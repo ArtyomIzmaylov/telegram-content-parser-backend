@@ -1,6 +1,5 @@
 import Joi from "joi";
-import axios from "axios"
-import {AxiosResponse} from "axios";
+import axios, {AxiosResponse} from "axios"
 
 const responseSchema = Joi.object({
     data: Joi.string().required(),
@@ -26,24 +25,26 @@ interface IRequestBody {
     mode_gen : PromptMode
 }
 export interface IGeneratorService {
-    generate(url : string, body : IRequestBody) : Promise<AxiosResponse<IResponse>>
+    generate(url : string, body : IRequestBody) : Promise<AxiosResponse<IResponse> | null>
 }
 export class GeneratorService implements IGeneratorService {
     constructor() {
     }
 
-    async generate(url: string, body: IRequestBody) : Promise<AxiosResponse<IResponse>>{
-
-        const response : AxiosResponse<IResponse> = await axios.post(url, body);
-        const validationResponseResult = responseSchema.validate(response.data);
-        if (!validationResponseResult.error) {
-            console.log('Ответ успешно прошел валидацию:', validationResponseResult.value);
-        } else {
-            console.log(validationResponseResult.error)
+    async generate(url: string, body: IRequestBody) : Promise<AxiosResponse<IResponse> | null>{
+        try {
+            return await axios.post(url, body)
         }
-        return response
-
-
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                // Ошибка, связанная с Axios (например, проблемы с сетью или ответом сервера)
+                console.error('Axios error:', error.message);
+            } else {
+                // Другая ошибка
+                console.error('Unexpected error:', error);
+            }
+            return null
+        }
     }
 }
 
