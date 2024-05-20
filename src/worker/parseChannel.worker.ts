@@ -11,11 +11,14 @@ import {TelegramClient} from "telegram";
             parentPort.postMessage({ workerResult: validationSessionResult });
         }
     }
+    console.log('Наконец то я сделал реальный кайф своем ком нате ' +
+        '')
     const stringSession = new StringSession(STRING_SESSION)
     const client = new TelegramClient(stringSession, API_ID, API_HASH, {});
     try {
         await client.connect()
-        const messages = await client.getMessages(workerData.channelName, {
+        const channelName = workerData.requestData.channelName
+        const messages = await client.getMessages(channelName, {
             limit: LIMIT_MESSAGES,
         })
         if (parentPort) {
