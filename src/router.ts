@@ -6,8 +6,9 @@ import {IRequestParseChannels, IRequestValidateChannelData, IUserChannels} from 
 import {IChannelValidatorWorkerResult} from "./worker/worker.interface";
 import {WorkerDispatcher} from "./dispatcher/worker.dispatcher";
 import {UserParseChannelsIterator} from "./iterator/userParseChannels.iterator";
-import {UserChannelsIterator} from "./iterator/userChannels.iterator";
+import {IUserChannelParsedData, UserChannelsIterator} from "./iterator/userChannels.iterator";
 import {GeneratorService, PromptMode} from "./generator/generator.service";
+import {TextGeneratorIterator} from "./iterator/textGenerator.iterator";
 
 const router = express.Router();
 
@@ -39,27 +40,26 @@ router.get('/parseChannels', async (req, res) => {
         res.send("Invalid request " + JSON.stringify(error))
     }
     else {
-        const generatorService = new GeneratorService()
         const pathToWorker = path.join(__dirname, 'worker', 'parseChannel.worker.js')
         const workerDispatcher = new WorkerDispatcher(new UserParseChannelsIterator(new WorkerService(pathToWorker)))
         const userChannelsIterator = new UserChannelsIterator(workerDispatcher)
-        const parsedChannelsResult : any = []
+        const textGeneratorIterator = new TextGeneratorIterator(new GeneratorService())
+        const parsedChannelsResult : IUserChannelParsedData[] = []
+        const generateTextsResult : any[] = []
         const requestParseChannels : IRequestParseChannels = {
             userChannels : value.userChannels as IUserChannels[]
         }
         for await (const userChannel of userChannelsIterator.iterate(requestParseChannels.userChannels)) {
             parsedChannelsResult.push(userChannel)
         }
-        //Здесь я делаю запрос на GO-Service
-        console.log(parsedChannelsResult[0].texts[0])
-        //const reqArr : string[] = [parsedChannelsResult[0].texts[0][0], parsedChannelsResult[0].texts[0][1], parsedChannelsResult[0].texts[2]]
-        const reqArr = ["Я Саша и живу выффывфыв Бразиsadasdasdadasлии.", "Путешествие для человека играет важную роль", "В кафе можно отлично перекусить"]
-        const generateResult = await generatorService.generate('http://localhost:5000/api/gpt/generate', {
-            request_texts: parsedChannelsResult[0].texts[0],
-            mode_gen: PromptMode.ConnectText
-        })
+        for await (const userChannel of textGeneratorIterator.iterate(parsedChannelsResult)) {
+            generateTextsResult.push(userChannel)
+        }
 
-        res.send(generateResult)
+
+
+
+        res.send(generateTextsResult)
     }
 
 })

@@ -7,7 +7,7 @@ const responseSchema = Joi.object({
     response_message: Joi.string().valid("Success").required()
 });
 
-interface IResponse {
+export interface IResponse {
     data : string
     response_key : string
     response_message : string
