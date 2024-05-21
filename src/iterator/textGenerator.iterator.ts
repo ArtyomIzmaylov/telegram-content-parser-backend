@@ -1,20 +1,18 @@
-import {IUserChannels} from "../request/request.interface";
 import {GeneratorService, PromptMode} from "../generator/generator.service";
-import {IUserChannelParsedData} from "./userChannels.iterator";
+import {IGeneratorIteratorData} from "./iterator.interface";
 
 
 export class TextGeneratorIterator {
     constructor(private generatorService : GeneratorService) {
     }
 
-    async* iterate(userParseChannels: IUserChannelParsedData[]) {
-
+    async* iterate(userParseChannels: IGeneratorIteratorData[]) {
 
         for (const userChannel of userParseChannels) {
             try {
                 const result = await this.generatorService.generate('http://localhost:5000/api/gpt/generate', {
                     request_texts: userChannel.texts.flat(),
-                    mode_gen: PromptMode.ConnectText
+                    mode_gen: userChannel.modeGen,
                 })
                 yield result
             } catch (e) {

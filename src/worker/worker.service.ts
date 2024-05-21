@@ -1,16 +1,16 @@
 import {Worker} from "worker_threads";
-import {IRequestParseChannels, IRequestValidateChannelData} from "../request/request.interface";
+import {IRequestParseChannels, IRequestValidateChannel} from "../request/request.interface";
 
 
 export interface IWorkerService {
-    run(requestData : IRequestValidateChannelData | IRequestParseChannels) : Promise<any>
+    run(requestData : IRequestValidateChannel | IRequestParseChannels) : Promise<any>
 }
 export class WorkerService implements IWorkerService{
 
     constructor(private readonly pathToWorker : string) {
     }
 
-    async run(requestData : IRequestValidateChannelData | IRequestParseChannels) {
+    async run(requestData : IRequestValidateChannel | IRequestParseChannels) {
         return new Promise((resolve, reject) => {
             const worker = new Worker(this.pathToWorker, { workerData : {
                 requestData : requestData

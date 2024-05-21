@@ -6,7 +6,7 @@ import {ChannelValidator} from "../validator/channel.validator";
 import {ConfigService} from "../config/config.service";
 import {StringSessionValidator} from "../validator/stringSession.validator";
 import {IChannelValidatorWorkerResult} from "./worker.interface";
-import {IRequestValidateChannelData} from "../request/request.interface";
+import {IRequestValidateChannel} from "../request/request.interface";
 
 
 const { workerData, parentPort } = require('worker_threads');
@@ -22,7 +22,7 @@ const { workerData, parentPort } = require('worker_threads');
     const stringSession = new StringSession(STRING_SESSION)
     const client = new TelegramClient(stringSession, API_ID, API_HASH, {});
     const channelValidator = new ChannelValidator(client, new ConfigService())
-    const requestData = workerData.requestData as IRequestValidateChannelData
+    const requestData = workerData.requestData as IRequestValidateChannel
 
     try {
         await client.connect()

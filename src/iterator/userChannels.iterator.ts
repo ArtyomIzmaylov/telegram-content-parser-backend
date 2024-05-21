@@ -18,7 +18,7 @@ export class UserChannelsIterator {
                 const workerParseChannelsResult = await this.workerDispatcher.dispatch(parseChannels)
                 const userChannelParsed : IUserChannelParsedData = {
                     texts : workerParseChannelsResult,
-                    title : userChannel.title
+                    title : userChannel.title,
                 }
 
                 yield userChannelParsed

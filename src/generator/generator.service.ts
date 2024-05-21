@@ -1,5 +1,7 @@
 import Joi from "joi";
 import axios, {AxiosResponse} from "axios"
+import {IRequestGenerateTextData} from "../request/request.interface";
+import {IGeneratorTextResponse} from "../response/response.interface";
 
 const responseSchema = Joi.object({
     data: Joi.string().required(),
@@ -7,11 +9,7 @@ const responseSchema = Joi.object({
     response_message: Joi.string().valid("Success").required()
 });
 
-export interface IResponse {
-    data : string
-    response_key : string
-    response_message : string
-}
+
 
 
 export enum PromptMode {
@@ -20,20 +18,16 @@ export enum PromptMode {
     ChangeText = "PromptChangeText"
 }
 
-interface IRequestBody {
-    request_texts : string[]
-    mode_gen : PromptMode
-}
+
+
 export interface IGeneratorService {
-    generate(url : string, body : IRequestBody) : Promise<IResponse | string>
+    generate(url : string, body : IRequestGenerateTextData) : Promise<IGeneratorTextResponse | string>
 }
 export class GeneratorService implements IGeneratorService {
-    constructor() {
-    }
 
-    async generate(url: string, body: IRequestBody) : Promise<IResponse | string>{
+    async generate(url: string, body: IRequestGenerateTextData) : Promise<IGeneratorTextResponse | string>{
         try {
-            const result : AxiosResponse<IResponse> = await axios.post(url, body)
+            const result : AxiosResponse<IGeneratorTextResponse> = await axios.post(url, body)
             return result.data
         }
         catch (error) {
