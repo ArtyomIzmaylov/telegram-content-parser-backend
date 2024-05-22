@@ -1,6 +1,11 @@
 import {WorkerDispatcher} from "../dispatcher/worker.dispatcher";
 import {IUserChannels} from "../request/request.interface";
 
+
+export interface IUserChannelParsedData {
+    texts : string[]
+    title : string
+}
 export class UserChannelsIterator {
 
     constructor(private workerDispatcher : WorkerDispatcher) {
@@ -11,7 +16,7 @@ export class UserChannelsIterator {
             try {
                 const parseChannels = userChannel.channels
                 const workerParseChannelsResult = await this.workerDispatcher.dispatch(parseChannels)
-                const userChannelParsed = {
+                const userChannelParsed : IUserChannelParsedData = {
                     texts : workerParseChannelsResult,
                     title : userChannel.title
                 }
