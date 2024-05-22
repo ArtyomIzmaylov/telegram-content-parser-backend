@@ -4,28 +4,31 @@ import {StringSession} from "telegram/sessions";
 import {API_HASH, API_ID, STRING_SESSION} from "../creds";
 import {ChannelValidator} from "../validator/channel.validator";
 import {ConfigService} from "../config/config.service";
-import {IChannelWorkerResult} from "./worker.interface";
 import {StringSessionValidator} from "../validator/stringSession.validator";
+import {IChannelValidatorWorkerResult} from "./worker.interface";
+import {IRequestValidateChannelData} from "../request/request.interface";
 
 
 const { workerData, parentPort } = require('worker_threads');
 
 (async () => {
 
-    const validationResult = new StringSessionValidator().validate(STRING_SESSION)
-    if (validationResult !== 'Сессия валидная.') {
+    const validationSessionResult = new StringSessionValidator().validate(STRING_SESSION)
+    if (validationSessionResult !== 'Сессия валидная.') {
         if (parentPort) {
-            parentPort.postMessage({ result: validationResult });
+            parentPort.postMessage({ workerResult: validationSessionResult });
         }
     }
     const stringSession = new StringSession(STRING_SESSION)
     const client = new TelegramClient(stringSession, API_ID, API_HASH, {});
     const channelValidator = new ChannelValidator(client, new ConfigService())
+    const requestData = workerData.requestData as IRequestValidateChannelData
+
     try {
         await client.connect()
-        const validateResult = await channelValidator.validate(workerData.channelLink)
-        const workerResult : IChannelWorkerResult = {
-            result : validateResult ? 'Канал существует' : 'Канал не существует'
+        const validateResult = await channelValidator.validate(requestData.channelName)
+        const workerResult : IChannelValidatorWorkerResult = {
+            workerResult : validateResult ? 'Канал существует' : 'Канал не существует'
         }
         if (parentPort) {
             parentPort.postMessage(workerResult);
@@ -34,7 +37,7 @@ const { workerData, parentPort } = require('worker_threads');
     catch (e) {
         console.log(e)
         if (parentPort) {
-            parentPort.postMessage({ result: e });
+            parentPort.postMessage({ workerResult: e });
         }
     }
     finally {

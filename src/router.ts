@@ -2,6 +2,7 @@ import express from "express";
 import {WorkerService} from "./worker/worker.service";
 import path from "path";
 import {IChannelWorkerResult, IWorkerData} from "./worker/worker.interface";
+import Joi from "joi";
 import {UserParseChannelsIterator} from "./iterator/userParseChannels.iterator";
 import {WorkerDispatcher} from "./dispatcher/worker.dispatcher";
 import {UserChannelsIterator} from "./iterator/userChannels.iterator";
@@ -24,6 +25,7 @@ router.get('/validateChannel', async(req, res) => {
             channelLink : value.channelName
         }
         const result = await workerService.run(workerData) as IChannelWorkerResult
+        console.log(result)
         return res.send((result))
     }
 

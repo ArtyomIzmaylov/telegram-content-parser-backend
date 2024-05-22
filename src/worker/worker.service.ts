@@ -1,15 +1,20 @@
 import {Worker} from "worker_threads";
-import {IChannelWorkerResult, IWorkerData, IWorkerParseChannelData} from "./worker.interface";
+import {IRequestParseChannels, IRequestValidateChannelData} from "../request/request.interface";
 
 
-export class WorkerService {
+export interface IWorkerService {
+    run(requestData : IRequestValidateChannelData | IRequestParseChannels) : Promise<any>
+}
+export class WorkerService implements IWorkerService{
 
     constructor(private readonly pathToWorker : string) {
     }
 
-    async run(workerData : IWorkerData | IWorkerParseChannelData) {
+    async run(requestData : IRequestValidateChannelData | IRequestParseChannels) {
         return new Promise((resolve, reject) => {
-            const worker = new Worker(this.pathToWorker, { workerData });
+            const worker = new Worker(this.pathToWorker, { workerData : {
+                requestData : requestData
+            } });
             worker.on('message', resolve);
             worker.on('error', reject);
             worker.on('exit', (code : any) => {
