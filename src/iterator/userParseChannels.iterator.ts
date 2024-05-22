@@ -1,9 +1,10 @@
-import path from "path";
 import {WorkerService} from "../worker/worker.service";
 import {IWorkerParseChannelData} from "../worker/worker.interface";
 
-
-export class UserParseChannelsIterator {
+export interface IUserParseChannelsIterator {
+    iterate(userParseChannels : string[]) : void
+}
+export class UserParseChannelsIterator implements IUserParseChannelsIterator{
     constructor(private readonly workerService : WorkerService) {
     }
     async * iterate(userParseChannels : string[]) {

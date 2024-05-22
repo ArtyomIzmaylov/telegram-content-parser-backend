@@ -1,5 +1,5 @@
 import express from "express";
-import router from "./router";
+import router from "./router/router";
 import {APP_PORT} from "./creds";
 import {GeneratorService, PromptMode} from "./generator/generator.service";
 

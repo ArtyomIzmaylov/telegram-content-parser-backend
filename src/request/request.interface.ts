@@ -3,6 +3,7 @@
 
 export interface IRequestValidateChannelData {
     channelName : string
+    modeGen : string
 }
 
 export interface IUserChannels {

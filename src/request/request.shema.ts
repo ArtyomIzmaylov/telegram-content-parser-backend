@@ -9,5 +9,6 @@ export const userParseChannelsSchema = Joi.object({
             title: Joi.string().required(),
             channels: Joi.array().items(Joi.string()).required(),
         })
-    ).required()
+    ).required(),
+    modeGen : Joi.string().required()
 });
